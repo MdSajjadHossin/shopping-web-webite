@@ -4,7 +4,6 @@ const loadProducts = () => {
     .then((response) => response.json())
     .then((data) => showProducts(data));
 };
-loadProducts();
 
 // show all product in UI 
 const showProducts = (products) => {
@@ -13,18 +12,37 @@ const showProducts = (products) => {
     const images = product.image;
     const div = document.createElement("div");
     div.classList.add("product");
-    div.innerHTML = `<div class="single-product">
+    div.innerHTML = `<div class="single-product my-4 mx-2">
       <div>
     <img class="product-image" src=${images}></img>
       </div>
-      <h3>${product.title}</h3>
+      <h3 class="fs-5">${product.title}</h3>
       <p>Category: ${product.category}</p>
-      <p>Product Rating: ${product.rating.rate}</p>
-      <h2>Price: $ ${product.price}</h2>
+      <p>Total Submitted Rating:${product.rating.count}</p>
+      <p>Average Rating: ${product.rating.rate} </p>
+      <h2 class="fs-5">Price: $ ${product.price}</h2>
       <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-      <button id="details-btn" class="btn btn-danger">Details</button></div>
+      <button onclick="showDetails(${product.description})" id="details-btn" class="btn btn-danger">Details</button></div>
       `;
     document.getElementById("all-products").appendChild(div);
+  }
+};
+//product details
+const showDetails = (products) => {
+  const allProducts = products.map((pd) => pd);
+  for (const product of allProducts) {
+    const images = product.image;
+    const div = document.createElement("div");
+    div.classList.add("product");
+    div.innerHTML = `<div class="single-product my-4 mx-2">
+      <div>
+    <img class="product-image" src=${images}></img>
+      </div>
+      <h3 class="fs-5">${product.title}</h3>
+      <p>Category: ${product.category}</p>
+      <p>Category: ${product.description}</p>
+      `;
+    document.getElementById("product-details").appendChild(div);
   }
 };
 let count = 0;
@@ -52,30 +70,32 @@ const updatePrice = (id, value) => {
 
 // set innerText function
 const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = value;
+  document.getElementById(id).innerText = parseFloat(value);
 };
 
 // update delivery charge and total Tax
 const updateTaxAndCharge = () => {
   const priceConverted = getInputValue("price");
   if (priceConverted > 200) {
-    setInnerText("delivery-charge", 30);
-    setInnerText("total-tax", priceConverted * 0.2);
+    const deliveryCharge =  setInnerText("delivery-charge", 30);
+    const totalTax =  setInnerText("total-tax", (priceConverted * 0.2).toFixed(2));
+    const extraCost = deliveryCharge + totalTax;
   }
   if (priceConverted > 400) {
-    setInnerText("delivery-charge", 50);
-    setInnerText("total-tax", priceConverted * 0.3);
+    const deliveryCharge = setInnerText("delivery-charge", 50);
+    const totalTax =  setInnerText("total-tax", (priceConverted * 0.3).toFixed(2));
+    const extraCost = deliveryCharge + totalTax;
   }
   if (priceConverted > 500) {
-    setInnerText("delivery-charge", 60);
-    setInnerText("total-tax", priceConverted * 0.4);
+    const deliveryCharge = setInnerText("delivery-charge", 60);
+    const totalTax =  setInnerText("total-tax", (priceConverted * 0.4).toFixed(2));
+    const extraCost = deliveryCharge + totalTax;
   }
 };
 
 //grandTotal update function
-const updateTotal = () => {
-  const grandTotal =
-    getInputValue("price") + getInputValue("delivery-charge") +
-    getInputValue("total-tax");
-  document.getElementById("total").innerText = grandTotal;
+const updateTotal = (extraCost) => {
+  const grandTotal = total + extraCost;
+  document.getElementById("total").innerText = grandTotal.toFixed(2);
 };
+loadProducts();
