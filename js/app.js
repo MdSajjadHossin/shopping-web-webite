@@ -5,6 +5,28 @@ const loadProducts = () => {
     .then((data) => showProducts(data));
 };
 
+// single output
+fetch('https://fakestoreapi.com/products/1')
+            .then(res => res.json())
+            .then(json => displaySingleitem(json))
+
+const displaySingleitem = (item) => {
+    // console.log(meal);
+    const singleItem= document.getElementById('single-item');
+    singleItem.textContent = '';
+    const div = document.createElement('div');
+    div.classList.add('card');
+    div.innerHTML = `
+    <div  class="card">
+    <img  class="w-25 h-25" src="${item.image}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">${item.title}</h5>
+      <p class="card-text">${item.description}</p>
+    </div>
+    `;
+  singleItem.appendChild(div);
+
+}
 // show all product in UI 
 const showProducts = (products) => {
   const allProducts = products.map((pd) => pd);
@@ -22,7 +44,7 @@ const showProducts = (products) => {
       <p>Average Rating: ${product.rating.rate} </p>
       <h2 class="fs-5">Price: $ ${product.price}</h2>
       <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-      <button conclick = "details-modal()" id="details-btn" class="btn btn-danger">Details</button></div>
+      <button conclick = "displaySingleitem()" id="details-btn" class="btn btn-danger">Details</button></div>
       `;
     document.getElementById("all-products").appendChild(div);
   }
