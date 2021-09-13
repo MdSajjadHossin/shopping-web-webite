@@ -22,29 +22,12 @@ const showProducts = (products) => {
       <p>Average Rating: ${product.rating.rate} </p>
       <h2 class="fs-5">Price: $ ${product.price}</h2>
       <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-      <button onclick="showDetails(${product.description})" id="details-btn" class="btn btn-danger">Details</button></div>
+      <button conclick = "details-modal()" id="details-btn" class="btn btn-danger">Details</button></div>
       `;
     document.getElementById("all-products").appendChild(div);
   }
 };
-//product details
-const showDetails = (products) => {
-  const allProducts = products.map((pd) => pd);
-  for (const product of allProducts) {
-    const images = product.image;
-    const div = document.createElement("div");
-    div.classList.add("product");
-    div.innerHTML = `<div class="single-product my-4 mx-2">
-      <div>
-    <img class="product-image" src=${images}></img>
-      </div>
-      <h3 class="fs-5">${product.title}</h3>
-      <p>Category: ${product.category}</p>
-      <p>Category: ${product.description}</p>
-      `;
-    document.getElementById("product-details").appendChild(div);
-  }
-};
+
 let count = 0;
 const addToCart = (id, price) => {
   count = count + 1;
