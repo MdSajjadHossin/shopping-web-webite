@@ -52,6 +52,7 @@ const addToCart = (id, price) => {
 
   updateTaxAndCharge();
   document.getElementById("total-Products").innerText = count;
+  updateTotal();
 };
 
 const getInputValue = (id) => {
@@ -70,32 +71,37 @@ const updatePrice = (id, value) => {
 
 // set innerText function
 const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = parseFloat(value);
+  document.getElementById(id).innerText = value.toFixed(2);
 };
 
 // update delivery charge and total Tax
 const updateTaxAndCharge = () => {
   const priceConverted = getInputValue("price");
   if (priceConverted > 200) {
-    const deliveryCharge =  setInnerText("delivery-charge", 30);
-    const totalTax =  setInnerText("total-tax", (priceConverted * 0.2).toFixed(2));
-    const extraCost = deliveryCharge + totalTax;
+    setInnerText("delivery-charge", 30);
+    setInnerText("total-tax", (priceConverted * 0.2));
+    
   }
   if (priceConverted > 400) {
-    const deliveryCharge = setInnerText("delivery-charge", 50);
-    const totalTax =  setInnerText("total-tax", (priceConverted * 0.3).toFixed(2));
-    const extraCost = deliveryCharge + totalTax;
+    setInnerText("delivery-charge", 50);
+    setInnerText("total-tax", (priceConverted * 0.3));
+    
   }
   if (priceConverted > 500) {
-    const deliveryCharge = setInnerText("delivery-charge", 60);
-    const totalTax =  setInnerText("total-tax", (priceConverted * 0.4).toFixed(2));
-    const extraCost = deliveryCharge + totalTax;
+    setInnerText("delivery-charge", 60);
+    setInnerText("total-tax", (priceConverted * 0.4));
+    
   }
 };
 
 //grandTotal update function
-const updateTotal = (extraCost) => {
-  const grandTotal = total + extraCost;
+const updateTotal = () => {
+  const grandTotal =
+    getInputValue("price") + getInputValue("delivery-charge") +
+    getInputValue("total-tax");
+    console.log(grandTotal);
   document.getElementById("total").innerText = grandTotal.toFixed(2);
+  
+  
 };
 loadProducts();
